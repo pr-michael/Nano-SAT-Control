@@ -4,7 +4,7 @@ app = Flask(__name__)
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-# define actuators GPIOs
+# define GPIOs
 wire1 = 19
 wire2 = 26
 
