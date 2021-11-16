@@ -11,6 +11,7 @@ webbrowser.register('firefox',
 # configure broker, port and topic
 broker = 'broker.emqx.io'
 topic = "proj/nanoctrl" # mosquitto_sub -h test.mosquitto.org -t home/helolot/#
+# lastMsg = ''
 
 # generate client ID with pub prefix randomly
 client_id = f'python-mqtt-{random.randint(0, 100)}'
@@ -30,7 +31,12 @@ def connect_mqtt() -> mqtt_client:
 
 def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
-        # print(f"Received '{msg.payload.decode()}' from '{msg.topic}' topic")
+        #? Method that prevents from opening the webserver twice
+        # global lastMsg
+        # if (msg.payload.decode() != lastMsg):
+        #     lastMsg = msg.payload.decode()
+        #     webbrowser.get('firefox').open(msg.payload.decode())
+        
         webbrowser.get('firefox').open(msg.payload.decode())
 
     client.subscribe(topic)
