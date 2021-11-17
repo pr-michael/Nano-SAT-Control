@@ -1,5 +1,5 @@
 #MQTT broker. If this isn´t up check https://github.com/mqtt/mqtt.github.io/wiki/public_brokers
-MQTTHOST="broker.emqx.io"
+MQTTHOST="test.mosquitto.org"
 
 # Change this to become something unique, so that you get your own topic path
 MQTTPREFIX="proj/nanoctrl"

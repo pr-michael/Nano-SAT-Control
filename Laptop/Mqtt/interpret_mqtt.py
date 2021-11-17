@@ -9,7 +9,7 @@ webbrowser.register('firefox',
 	webbrowser.BackgroundBrowser("C://Program Files//Mozilla Firefox//firefox.exe"))
 
 # configure broker, port and topic
-broker = 'broker.emqx.io'
+broker = 'test.mosquitto.org'
 topic = "proj/nanoctrl" # mosquitto_sub -h test.mosquitto.org -t home/helolot/#
 # lastMsg = ''
 
@@ -36,7 +36,7 @@ def subscribe(client: mqtt_client):
         # if (msg.payload.decode() != lastMsg):
         #     lastMsg = msg.payload.decode()
         #     webbrowser.get('firefox').open(msg.payload.decode())
-        
+
         webbrowser.get('firefox').open(msg.payload.decode())
 
     client.subscribe(topic)
