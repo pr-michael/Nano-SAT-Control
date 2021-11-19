@@ -9,8 +9,8 @@ webbrowser.register('firefox',
 	webbrowser.BackgroundBrowser("C://Program Files//Mozilla Firefox//firefox.exe"))
 
 # configure broker, port and topic
-broker = 'test.mosquitto.org'
-topic = "proj/nanoctrl" # mosquitto_sub -h test.mosquitto.org -t home/helolot/#
+broker = 'broker.emqx.io'
+topic = "proj/nanoctrl" # mosquitto_sub -h broker -t topic
 # lastMsg = ''
 
 # generate client ID with pub prefix randomly
