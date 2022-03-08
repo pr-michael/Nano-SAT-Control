@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
   <body>
-    <table style="margin-left:auto;margin-right:auto;">
+    <table style="margin-left: auto; margin-right: auto">
       <tr>
         <td>
           <h2>WIRE ONE</h2>
@@ -31,7 +31,54 @@
           <a href="/off_2"><button class="button">OFF</button></a>
         </td>
       </tr>
-      %OUTPUT%
+      <tr>
+        <td>
+          <label class="toggle">
+            <span class="onoff"></span>
+            <input onclick="slider1()" type="checkbox" />
+            <span class="slider round"></span>
+          </label>
+        </td>
+        <td>
+          <label class="toggle">
+            <span class="onoff"></span>
+            <input onclick="slider2()" type="checkbox" />
+            <span class="slider round"></span>
+          </label>
+        </td>
+      </tr>
+      <tr>
+        %OUTPUT%
+      </tr>
     </table>
   </body>
+  <script>
+
+    var c1 = -1;
+    var c2 = -1;
+
+    function slider1() {
+      c1++;
+      if (c1 > 1) {
+        c1 = 0;
+      }
+      if (c1 == 0) {
+        window.location.href = "sw1_f";
+      } else if (c1 == 1) {
+        window.location.href = "sw1_r";
+      }
+    }
+
+    function slider2() {
+      c2++;
+      if (c2 > 1) {
+        c2 = 0;
+      }
+      if (c2 == 0) {
+        window.location.href = "sw2_f";
+      } else if (c2 == 1) {
+        window.location.href = "sw2_r";
+      }
+    }
+  </script>
 </html>

@@ -1,0 +1,11 @@
+table,
+td {
+  height: 10px;
+  width: 160px;
+  text-align: center;
+  vertical-align: middle;
+};
+
+.state {
+  background-color:darkgreen
+};

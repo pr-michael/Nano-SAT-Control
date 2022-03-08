@@ -3,21 +3,112 @@
   <head>
     <title>NanoSat-Webserver</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script language="javascript" type="text/javascript" src="https://code.highcharts.com/highcharts.js"></script>
+    <script language="javascript" type="text/javascript" src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <link rel="shortcut icon" type="image/png" href="/favicon.png" />
     <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
   <body>
     <h1>NanoSat-Webserver</h1>
     <p>
-      Cable1 <strong> %STATE1%</strong> &emsp; Cable2 <strong> %STATE2%</strong>
+      Cable1 <strong> %STATE1%</strong> &emsp; 
+      Cable2 <strong> %STATE2%</strong> &emsp; 
+      Cable3 <strong> %STATE3%</strong> &emsp; 
+      Cable4 <strong> %STATE4%</strong>
     </p>
     <p>
       <a href="/on1"><button class="button">ON</button></a> &emsp; &nbsp;
-      <a href="/on2"><button class="button">ON</button></a>
+      <a href="/on2"><button class="button">ON</button></a> &emsp; &nbsp;
+      <a href="/on3"><button class="button">ON</button></a> &emsp; &nbsp;
+      <a href="/on4"><button class="button">ON</button></a>
     </p>
     <p>
       <a href="/off1"><button class="button button2">OFF</button></a> &emsp;
-      <a href="/off2"><button class="button button2">OFF</button></a>
+      <a href="/off2"><button class="button button2">OFF</button></a> &emsp;
+      <a href="/off3"><button class="button button2">OFF</button></a> &emsp;
+      <a href="/off4"><button class="button button2">OFF</button></a>
     </p>
+    <p>
+      <input type="checkbox" id="switch"class="checkbox" />
+      <label for="switch" class="toggle"></label> &emsp; &emsp;
+      <input type="checkbox" id="switch"class="checkbox" />
+      <label for="switch" class="toggle"></label>
+    </p>
+
+    <!-- edins pfusch -->
+    <br>
+    <br>
+    <div id="chart-angle" class="container"></div>
+    <div id="chart-accelleration" class="container"></div>
+    <div id="chart-magnetometer" class="container"></div>
+    <!-- edins pfusch -->
+
   </body>
+
+  <!-- edins pfusch -->
+  <script>
+    var chartT = new Highcharts.Chart('chart-angle', {
+      chart:{width: 1000},
+      title: { text: 'MPU9250 Magnetometer Readings' },
+      series: [{
+        name: 'Random data',
+        borderRadiusTopLeft: 25,
+        borderRadiusTopRight: 25,
+        data: []
+      }],
+      plotOptions: {
+        line: { animation: false,
+          dataLabels: { enabled: true }
+        }
+      },
+      xAxis: { type: 'datetime',
+        dateTimeLabelFormats: { second: '%H:%M:%S' }
+      },
+      yAxis: {
+        title: { text: 'magnetometer' },
+        outerWidth: 20
+      },
+      credits: { enabled: false }
+    });
+    chartT.series[0].addPoint([(new Date()).getTime(), 0], true, false, false);
+    var cnt = 0;
+    setInterval(() => {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function(){
+        if (this.readyState == 4 && this.status == 200){
+          var x = (new Date()).getTime();
+          var y = this.parseFloat(this.responseText);//Math.floor(Math.random(1)*100);
+          console.log(cnt)
+          if(cnt > 20){
+            chartT.series[0].addPoint([x, y], true, true, false);
+          }else{
+            chartT.series[0].addPoint([x, y], true, false, false);
+            cnt++;
+          }
+        }
+      };
+      xhttp.open("GET", "/magnetometer", true);
+      xhttp.send();
+    }, 500);
+    
+    /*setInterval(() => {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var x = (new Date()).getTime(),
+              y = parseFloat(this.responseText);
+          if(chartT.series[0].data.length > 40) {
+            chartT.series[0].addPoint([x, y], true, true, true);
+          } else {
+            chartT.series[0].addPoint([x, y], true, false, true);
+          }
+        }
+      };
+      xhttp.open("GET", "/magnetometer", true);
+      xhttp.send();
+    }, 1000 ) ;*/
+    </script>
+    <!-- edins pfusch -->
+
 </html>

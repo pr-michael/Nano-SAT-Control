@@ -10,10 +10,14 @@ const char *password = "HTLInternet";
 // Set LED GPIO pins
 const int ledPin1 = 33;
 const int ledPin2 = 32;
+const int ledPin3 = 25;
+const int ledPin4 = 26;
 
 // Stores LED state
 String ledState1;
 String ledState2;
+String ledState3;
+String ledState4;
 
 // Create AsyncWebServer object on port 80
 AsyncWebServer server(80);
@@ -26,22 +30,22 @@ String getState(int val)
   {
     if (digitalRead(ledPin1))
     {
-      return "ON";
+      return "REVERSE";
     }
     else
     {
-      return "OFF";
+      return "FORWARD";
     }
   }
-  else if (val == 2)
+  else if (val == 3)
   {
-    if (digitalRead(ledPin2))
+    if (digitalRead(ledPin3))
     {
-      return "ON";
+      return "REVERSE";
     }
     else
     {
-      return "OFF";
+      return "FORWARD";
     }
   }
 }
@@ -52,7 +56,8 @@ String processor(const String &var)
   if (var == "OUTPUT")
   {
     String out = "";
-    out += "<tr><td><h3>" + getState(1) + "</h3></td><td><h3>" + getState(2) + "</h3></td></tr>";
+    out += "<td><h3>" + getState(1) + "</h3></td>";
+    out += "<td><h3>" + getState(3) + "</h3></td>";
 
     return out;
   }
@@ -67,6 +72,8 @@ void setup()
   // Set pinmode to output
   pinMode(ledPin1, OUTPUT);
   pinMode(ledPin2, OUTPUT);
+  pinMode(ledPin3, OUTPUT);
+  pinMode(ledPin4, OUTPUT);
 
   // Initialize SPIFFS
   if (!SPIFFS.begin(true))
@@ -117,6 +124,38 @@ void setup()
   server.on("/off_2", HTTP_GET, [](AsyncWebServerRequest *request)
             {
               digitalWrite(ledPin2, LOW);
+              request->send(SPIFFS, "/index.html", String(), false, processor);
+            });
+  
+  // GET-request on link /sw1_f
+  server.on("/sw1_f", HTTP_GET, [](AsyncWebServerRequest *request)
+            {
+              digitalWrite(ledPin1, LOW);
+              digitalWrite(ledPin2, HIGH);
+              request->send(SPIFFS, "/index.html", String(), false, processor);
+            });
+
+  // GET-request on link /sw1_r
+  server.on("/sw1_r", HTTP_GET, [](AsyncWebServerRequest *request)
+            {
+              digitalWrite(ledPin2, LOW);
+              digitalWrite(ledPin1, HIGH);
+              request->send(SPIFFS, "/index.html", String(), false, processor);
+            });
+
+  // GET-request on link /sw2_f
+  server.on("/sw2_f", HTTP_GET, [](AsyncWebServerRequest *request)
+            {
+              digitalWrite(ledPin3, LOW);
+              digitalWrite(ledPin4, HIGH);
+              request->send(SPIFFS, "/index.html", String(), false, processor);
+            });
+
+  // GET-request on link /sw2_r
+  server.on("/sw2_r", HTTP_GET, [](AsyncWebServerRequest *request)
+            {
+              digitalWrite(ledPin4, LOW);
+              digitalWrite(ledPin3, HIGH);
               request->send(SPIFFS, "/index.html", String(), false, processor);
             });
 
